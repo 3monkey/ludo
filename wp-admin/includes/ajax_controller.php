@@ -127,7 +127,7 @@ function updateGame(int $id, array $datos){
 
 	foreach($datos as $key => $value){
 		$params[] = $value;
-		$query .= " $key = %s,";
+		$query .= (is_int($value)) ? " $key = %d ,": " $key = %s,";
 	}
 
 	$query = substr($query, 0, -1);

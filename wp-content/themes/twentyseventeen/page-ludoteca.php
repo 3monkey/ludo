@@ -75,7 +75,7 @@
     <label>Duración</label><input name='i_duracion' id='i_duracion' class="text" value="" type="text"></input>
     <label>Autor</label><select name='i_autor' id='i_autor'></select>
     <label>Editorial</label><select name='i_editorial' id='i_editorial'></select>
-    <label>Activado</label><input name="i_anulado" id="i_anulado" type="checkbox"></input>
+    <input type='hidden' value='' id="i_anulado" name='i_anulado'/>
     <input type='hidden' value='' id="id_game" name='id_game'/>
     <input type='hidden' id='action' value='editLine' name='action'/>
   </fieldset>

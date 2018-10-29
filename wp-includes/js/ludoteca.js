@@ -37,9 +37,9 @@ jQuery(document).ready(function($) {
       { 
         render: function( data, type, row){
           if(row.anulado == 1){
-            return "<span><i class='fas fa-times'></i></span>";
+            return "<span id='btn-del' attr='"+row.game_id+"'><i class='fas fa-times'></i></span>";
           }else{
-            return "<span><i class='fas fa-check'></i></span>";
+            return "<span id='btn-del' attr='"+row.game_id+"'><i class='fas fa-check'></i></span>";
           }
         }
       },
@@ -85,6 +85,7 @@ jQuery(document).ready(function($) {
         i_game.val(gameSelect[0].titulo);
         i_njugadores.val(gameSelect[0].n_jugadores);
         i_duracion.val(gameSelect[0].duracion);
+        i_anulado.val(gameSelect[0].anulado);
         id_game.val(gameSelect[0].game_id);
 
         i_categoria.children("option[value='"+gameSelect[0].categoria_id+"']").attr('selected',true);
@@ -96,10 +97,36 @@ jQuery(document).ready(function($) {
       }
   });
 
-  $('#loadCsv').on('click',function(e){
-    e.preventDefault();
+  $('#dataTable').on('click','#btn-del',function(e){
+      e.preventDefault();
+      if(confirm("¿Realmente quieres eliminar el registro?")){
+        var value = $(this).attr('attr');
+        var gameSelect = $.map(games,function(row){
+          return (row.game_id == value) ? row: null;
+        });
 
-    // Comprobar si se ha seleccionado un archivo.
+        if(gameSelect.length > 0){
+          $('#action').val('editLine')
+          i_game.val(gameSelect[0].titulo);
+          i_njugadores.val(gameSelect[0].n_jugadores);
+          i_duracion.val(gameSelect[0].duracion);
+          if(gameSelect[0].anulado == 1){i_anulado.val(0)}else{i_anulado.val(1)};
+          id_game.val(gameSelect[0].game_id);
+
+          i_categoria.children("option[value='"+gameSelect[0].categoria_id+"']").attr('selected',true);
+          i_autor.children("option[value='"+gameSelect[0].autor_id+"']").attr('selected',true);
+          i_editorial.children("option[value='"+gameSelect[0].editorial_id+"']").attr('selected',true);
+          
+          if($('#action').val() != 'newLine'){
+                  $('#action').val('editLine');
+          }
+          setData($('#dialog-form'));
+        }
+      }
+  });
+
+  $('#loadCsv').on('click',function(e){
+      e.preventDefault();
   });
 
   $('#download').on('click',function(e){
@@ -182,6 +209,7 @@ jQuery(document).ready(function($) {
   function initCombos(){
     $.each(categorias, function(key, value){
       $('#i_categoria').append("<option value='" + value.categoria_id + "'>" + value.categoria + "</option>");
+      $('#sel-filter-cat').append("<option value='" + value.categoria_id + "'>" + value.categoria + "</option>");
     });
     $.each(autores, function(key, value){
       $('#i_autor').append("<option value='" + value.autor_id + "'>" + value.autor + "</option>");

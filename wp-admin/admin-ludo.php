@@ -64,6 +64,7 @@ switch ($accion) {
 				$obj['n_jugadores'] = $row['i_njugadores'] ;
 				$obj['autor'] = (!empty($row['i_autor'])) ? $row['i_autor']: 1;
 				$obj['editorial'] = (!empty($row['i_editorial'])) ? $row['i_editorial']: 1;
+				$obj['anulado'] = (isset($row['i_anulado'])) ? (int)$row['i_anulado']: 0;
 				return $obj;
 			},$datos);
 			if(!updateGame($id,$object[0])){
